@@ -9,7 +9,7 @@
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--bg:#07111f;--bg2:#0c1a2e;--panel:rgba(16,30,52,.82);--line:rgba(148,197,255,.16);--txt:#e6f0ff;--mut:#8aa3c2;--cy:#22d3ee;--am:#fbbf24;--gr:#34d399;--rd:#f43f5e;--vi:#a78bfa}
@@ -177,7 +177,12 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit;background:n
 </style>
 </head>
 <body>
-<div class="wrap" id="app"></div>
+<div class="wrap" id="app"><p id="ld" style="text-align:center;margin-top:40vh;color:#8aa3c2;font:600 16px sans-serif">Bilgi Adaları yükleniyor…</p></div>
+<script>
+var errShown=0;function showErr(err){try{console.error(err);if(errShown++)return;var d=document.createElement('div');d.style.cssText='position:fixed;left:10px;right:10px;bottom:10px;z-index:99;background:#7f1d1d;color:#fff;padding:12px;border-radius:12px;font:13px/1.4 monospace;white-space:pre-wrap';d.textContent='Hata: '+((err&&err.message)||err)+'\n'+(((err&&err.stack)||'')+'').split('\n').slice(0,3).join('\n')+'\n(Bu ekranın fotoğrafını Claude\'a gönder)';d.onclick=function(){d.remove();};document.body.appendChild(d);}catch(x){}}
+window.addEventListener('error',function(e){showErr(e.error||(e.message+' @'+e.lineno));});window.addEventListener('unhandledrejection',function(e){showErr(e.reason);});
+setTimeout(function(){var l=document.getElementById('ld');if(l)l.textContent='Oyun başlatılamadı. Sayfayı yenileyin; düzelmezse bu ekranın fotoğrafını Claude\'a gönderin.';},6000);
+</script>
 <script>
 const BANK = {
 emir:{
@@ -526,6 +531,177 @@ alm:[
 ]}
 };
 
+// Emre: 3. sınıf müfredatı
+const EMRE3={
+mat1:[
+["'Dört yüz yedi' rakamla nasıl yazılır?","407","470","47","4007","4 yüzlük, 0 onluk, 7 birlik: 407."],
+["586 sayısında 8 rakamının basamak değeri kaçtır?","80","8","800","86","8 onlar basamağında, değeri 8 × 10 = 80."],
+["349 sayısı en yakın onluğa yuvarlanırsa kaç olur?","350","340","300","400","Birler basamağı 9, yani 5'ten büyük; yukarı yuvarlanır: 350."],
+["268 + 147 = ?","415","405","315","425","8 + 7 = 15 (1 elde), 6 + 4 + 1 = 11 (1 elde), 2 + 1 + 1 = 4 → 415."],
+["503 − 128 = ?","375","385","425","475","Onluk ve yüzlük bozarak çıkarırız: 503 − 128 = 375."],
+["24 × 3 = ?","72","62","27","74","20 × 3 = 60, 4 × 3 = 12, 60 + 12 = 72."],
+["56 ÷ 7 = ?","8","7","9","6","7 × 8 = 56 olduğu için 56 ÷ 7 = 8."],
+["En büyük üç basamaklı tek sayı hangisidir?","999","998","899","1000","Üç basamaklı en büyük sayı 999 ve 9 ile bittiği için tektir."],
+["125, 150, 175, ... Sıradaki sayı kaçtır?","200","180","185","225","Sayılar 25'er artıyor: 175 + 25 = 200."],
+["5 yüzlük + 3 onluk + 6 birlik hangi sayıdır?","536","563","356","5036","500 + 30 + 6 = 536."],
+["7 × 8 = ?","56","54","48","63","7 × 8 = 56."],
+["Bir kitap 245 sayfa. Ayşe 98 sayfasını okudu. Kaç sayfa kaldı?","147","157","143","343","245 − 98 = 147 sayfa kaldı."]
+],
+mat2:[
+["2 metre kaç santimetredir?","200","20","2000","120","1 m = 100 cm, 2 m = 200 cm."],
+["2 kilogram kaç gramdır?","2000","200","20","2","1 kg = 1000 g, 2 kg = 2000 g."],
+["Bir pizza 4 eş parçaya bölündü. Bir parçası hangi kesirle gösterilir?","1/4","4/1","1/2","1/3","Bütün 4 eş parçaya bölündü, 1 parça: dörtte bir (1/4)."],
+["12 elmanın yarısı kaç elmadır?","6","4","3","8","Yarım = 2'ye bölmek: 12 ÷ 2 = 6."],
+["20'nin çeyreği kaçtır?","5","4","10","2","Çeyrek = 4'e bölmek: 20 ÷ 4 = 5."],
+["Saat 3.45'te yelkovan hangi sayıyı gösterir?","9","3","4","12","45 dakikada yelkovan 9'un üstündedir."],
+["1 saat 20 dakika kaç dakikadır?","80","120","70","60","1 saat = 60 dakika, 60 + 20 = 80."],
+["Kenarları 3 cm, 4 cm ve 5 cm olan üçgenin çevresi kaç cm'dir?","12","60","9","15","Çevre = kenarların toplamı: 3 + 4 + 5 = 12 cm."],
+["Bir küpün kaç yüzü vardır?","6","4","8","12","Küpün 6 yüzü, 8 köşesi ve 12 ayrıtı vardır."],
+["3 lira 50 kuruş kaç kuruştur?","350","305","35","3050","1 lira = 100 kuruş: 300 + 50 = 350 kuruş."],
+["Mart ayından 4 ay sonra hangi ay gelir?","Temmuz","Haziran","Ağustos","Nisan","Nisan, Mayıs, Haziran, Temmuz: 4 ay sonra Temmuz."],
+["Hangisinin içine 1 litreden fazla su sığar?","Bir kova","Bir su bardağı","Bir çay kaşığı","Bir şişe kapağı","Kova çok büyüktür; içine litrelerce su sığar."]
+],
+fen1:[
+["Dünya'nın yüzeyinin büyük bölümü neyle kaplıdır?","Su","Kara","Buz","Kum","Dünya'nın yaklaşık dörtte üçü sularla kaplıdır."],
+["Dünya'yı saran hava katmanına ne ad verilir?","Hava küre","Su küre","Taş küre","Çekirdek","Dünya'yı çepeçevre saran hava tabakası hava küredir."],
+["Hangisi bir duyu organı değildir?","Kalp","Göz","Burun","Deri","Kalp kan pompalar; duyu organlarımız göz, kulak, burun, dil ve deridir."],
+["Bir yemeğin tuzlu mu tatlı mı olduğunu hangi organımızla anlarız?","Dil","Kulak","Göz","Burun","Tatları dilimizle alırız."],
+["Alışveriş arabasını ileri götürmek için ona ne yaparız?","İteriz","Çekeriz","Döndürürüz","Hiçbir şey","Arabayı kendimizden uzaklaştırıyoruz: bu bir itme kuvvetidir."],
+["Halat çekme oyununda hangi kuvvet kullanılır?","Çekme","İtme","Esneme","Kesme","Halatı kendimize doğru çekeriz."],
+["Hangisi doğal bir ışık kaynağıdır?","Ateş böceği","El feneri","Ampul","Mum","Ateş böceği kendi ışığını doğada üretir; diğerlerini insanlar yapmıştır."],
+["Hangisi suda yüzer?","Tahta parçası","Taş","Demir çivi","Bozuk para","Tahta hafiftir ve suda yüzer."],
+["Hangi madde bulunduğu kabın şeklini alır?","Su","Taş","Tahta","Kalem","Sıvılar akar ve konuldukları kabın şeklini alır."],
+["Mıknatıs hangisini çekmez?","Plastik kaşık","Ataç","Demir çivi","Toplu iğne","Mıknatıs demir içeren cisimleri çeker, plastiği çekmez."],
+["Kulaklarımızı korumak için ne yapmalıyız?","Müziği kısık sesle dinlemeliyiz","Kulaklıkla çok yüksek sesle dinlemeliyiz","Sürekli bağırmalıyız","Kulağımıza kalem sokmalıyız","Çok yüksek ses işitme duyumuza zarar verir."],
+["Gölge nasıl oluşur?","Bir cisim ışığın önünü kapatınca","Yağmur yağınca","Hava kararınca","Su içince","Işık cismin içinden geçemez, arkasında karanlık bir alan oluşur."]
+],
+fen2:[
+["Hangisi pille çalışır?","Uzaktan kumanda","Buzdolabı","Çamaşır makinesi","Fırın","Kumanda pille çalışır; diğerleri prize takılır."],
+["Hangisi şebeke elektriğiyle (prize takılarak) çalışır?","Buzdolabı","El feneri","Kol saati","Oyuncak araba","Buzdolabı prize takılarak çalışır."],
+["Elektrikle ilgili hangisi güvenli bir davranıştır?","Islak elle prize dokunmamak","Prize çatal sokmak","Kabloları çekiştirmek","Saç kurutma makinesini suya yakın kullanmak","Su elektriği iletir; ıslak elle prize dokunmak çok tehlikelidir."],
+["Hangisi canlıların ortak özelliği değildir?","Konuşmak","Beslenmek","Büyümek","Solunum yapmak","Bütün canlılar beslenir, büyür ve solunum yapar; ama hepsi konuşamaz."],
+["Bitkinin topraktan su alan kısmı hangisidir?","Kök","Yaprak","Çiçek","Meyve","Kökler toprağın içindeki suyu emer."],
+["Hangisi yalnızca bitkiyle beslenen bir hayvandır?","Tavşan","Aslan","Kurt","Kartal","Tavşan ot, havuç gibi bitkilerle beslenir."],
+["Hangisi yumurtayla çoğalır?","Kaplumbağa","Kedi","Yunus","At","Kaplumbağalar kuma yumurta bırakır; yunus ise yavru doğurur."],
+["Su kaynayınca neye dönüşür?","Su buharına","Buza","Kuma","Taşa","Kaynayan su gaz hâline, yani su buharına dönüşür."],
+["Hangisi esneyebilen bir maddedir?","Lastik","Cam","Taş","Tahta","Lastik çekilince uzar, bırakınca eski hâline döner."],
+["Işığı hiç geçirmeyen madde hangisidir?","Tahta","Cam","Su","Hava","Tahtanın arkasını göremeyiz; ışık geçmez."],
+["Kışın bazı hayvanlar uzun süre uyur. Buna ne denir?","Kış uykusu","Göç","Beslenme","Avlanma","Ayı, kirpi gibi hayvanlar kışı uyuyarak geçirir."],
+["Kuşların sıcak ülkelere gidip gelmesine ne denir?","Göç","Kış uykusu","Yuva yapma","Tüy dökme","Leylek gibi kuşlar kışın sıcak yerlere göç eder."]
+],
+sos1:[
+["Türkiye Cumhuriyeti'nin kurucusu kimdir?","Mustafa Kemal Atatürk","Mehmet Akif Ersoy","Fatih Sultan Mehmet","Osman Bey","Cumhuriyetimizi 1923'te Atatürk kurdu."],
+["19 Mayıs hangi bayramdır?","Atatürk'ü Anma, Gençlik ve Spor Bayramı","Cumhuriyet Bayramı","Zafer Bayramı","Ulusal Egemenlik ve Çocuk Bayramı","Atatürk 19 Mayıs 1919'da Samsun'a çıktı ve bu günü gençlere armağan etti."],
+["30 Ağustos hangi bayramdır?","Zafer Bayramı","Cumhuriyet Bayramı","Çocuk Bayramı","Gençlik ve Spor Bayramı","30 Ağustos 1922'de Büyük Taarruz zaferle sonuçlandı."],
+["Sabah Güneş'e doğru baktığımızda hangi yöne bakıyoruzdur?","Doğu","Batı","Kuzey","Güney","Güneş sabah doğudan doğar."],
+["Gölgemiz günün hangi saatinde en kısadır?","Öğle vakti","Sabah erken","Akşamüstü","Gün batarken","Öğlen Güneş tepemizdeyken gölgemiz en kısa olur."],
+["Hangisi bir ihtiyaç değil, istektir?","Yeni oyun konsolu","Su","Yemek","Barınacak ev","Yaşamak için su, yemek ve barınak gerekir; oyun konsolu bir istektir."],
+["Mahallemizin işleriyle ilgilenen, seçimle gelen kişi kimdir?","Muhtar","Vali","Öğretmen","Doktor","Muhtar mahallenin yöneticisidir ve seçimle gelir."],
+["Deprem anında ne yapmalıyız?","Çök, kapan, tutun","Merdivenlerden koşmak","Asansöre binmek","Pencereye koşmak","Sağlam bir eşyanın yanına çöküp başımızı korur ve tutunuruz."],
+["Hangisi sağlıklı bir alışkanlıktır?","Her gün dişlerimizi fırçalamak","Gece çok geç yatmak","Çok şeker yemek","Hiç su içmemek","Dişlerimizi günde iki kez fırçalamalıyız."],
+["Geri dönüşüm kutularında mavi kutu hangi atık içindir?","Kâğıt","Cam","Pil","Yemek artığı","Mavi kâğıt, sarı plastik, yeşil cam içindir."],
+["Hangisi israf örneğidir?","Boş odada ışığı açık bırakmak","Dişleri fırçalarken musluğu kapatmak","Defterin iki yüzünü de kullanmak","Tabağımızdaki yemeği bitirmek","Kullanmadığımız ışık boşuna elektrik harcar."],
+["Yayalar karşıdan karşıya nereden geçmelidir?","Yaya geçidinden","Araçların arasından","Virajdan","Park etmiş arabaların arkasından","Yaya geçidi güvenli geçiş yeridir."]
+],
+sos2:[
+["Atatürk hangi yıl doğdu?","1881","1923","1938","1919","Atatürk 1881'de Selanik'te doğdu."],
+["Atatürk'ün babasının adı nedir?","Ali Rıza Efendi","Mehmet Efendi","Hasan Efendi","Ahmet Efendi","Annesi Zübeyde Hanım, babası Ali Rıza Efendi'dir."],
+["Ulusal Egemenlik ve Çocuk Bayramı hangi gündür?","23 Nisan","29 Ekim","19 Mayıs","30 Ağustos","TBMM 23 Nisan 1920'de açıldı; Atatürk bu günü çocuklara armağan etti."],
+["İstiklal Marşı'nın şairi kimdir?","Mehmet Akif Ersoy","Yunus Emre","Atatürk","Nasreddin Hoca","İstiklal Marşı'nı Mehmet Akif Ersoy yazdı."],
+["Haritada kuzey yönü genellikle nereyi gösterir?","Yukarıyı","Aşağıyı","Sağı","Solu","Haritaların üst tarafı kuzeydir."],
+["Hangisi bir doğal afettir?","Sel","Bayram","Düğün","Konser","Sel, aşırı yağmur sonucu oluşan bir doğal afettir."],
+["Bir yiyeceği almadan önce neye bakmalıyız?","Son kullanma tarihine","Sadece paketin rengine","Reklamına","Hiçbir şeye","Tarihi geçmiş yiyecekler sağlığımıza zarar verebilir."],
+["Hangisi bir üretim örneğidir?","Çiftçinin buğday yetiştirmesi","Marketten alışveriş yapmak","Televizyon izlemek","Uyumak","Çiftçi tarlada ürün yetiştirerek üretim yapar."],
+["Hangisi herkesin ortak kullandığı bir alandır?","Park","Yatak odamız","Mutfağımız","Dolabımız","Parklar herkese aittir; temiz tutmalıyız."],
+["Bayrağımızdaki ay ve yıldız ne renktir?","Beyaz","Kırmızı","Sarı","Mavi","Al zemin üzerinde beyaz ay ve yıldız vardır."],
+["Tablet kullanırken hangisine dikkat etmeliyiz?","Kullanma süremizi sınırlamaya","Bütün gün kullanmaya","Karanlıkta yatakta kullanmaya","Şarjdayken suya yakın kullanmaya","Uzun süre ekrana bakmak gözlerimizi yorar."],
+["Yangın çıktığında hangi numarayı ararız?","112","155","110","911","Türkiye'de tüm acil durumlar için 112 aranır."]
+],
+tur1:[
+["'Geniş' kelimesinin zıt anlamlısı hangisidir?","dar","büyük","uzun","yüksek","Geniş ↔ dar."],
+["'Cevap' kelimesinin eş anlamlısı hangisidir?","yanıt","soru","sözcük","ses","Cevap ve yanıt aynı anlama gelir."],
+["Hangi cümlede 'yüz' bir sayıyı anlatır?","Bahçede yüz tane çiçek var.","Yüzünü yıka.","Denizde yüzdük.","Yüzü gülüyordu.","Burada 'yüz' 100 sayısıdır."],
+["'Pencere' kelimesi kaç hecelidir?","3","2","4","5","Pen-ce-re: 3 hece."],
+["Sözlükte hangisi önce gelir?","balık","bardak","bebek","bulut","İlk harfler aynı: ikinci ve üçüncü harflere bakarız. 'bal' önce gelir."],
+["Kesme işareti hangi cümlede doğru kullanılmıştır?","Ankara'ya gittik.","Ankaraya gittik.","Ankara ya gittik.","An'karaya gittik.","Özel isimlere gelen ekler kesme işaretiyle ayrılır."],
+["Hangi cümlenin sonuna ünlem işareti konur?","Yaşasın, tatil başladı","Okula gidiyorum","Saat kaç","Annem eve geldi","Sevinç, şaşkınlık, korku bildiren cümlelere ünlem konur."],
+["'Kitaplar' kelimesindeki '-lar' eki ne anlam katar?","Birden fazla olduğunu","Küçük olduğunu","Soru sorduğunu","Olumsuzluğu","-ler/-lar çokluk ekidir."],
+["Hangisi özel isimdir?","Ege Denizi","deniz","şehir","göl","Belli bir denizin adıdır, büyük harfle başlar."],
+["Hangi cümlede 'de' doğru yazılmıştır?","Ben de geleceğim.","Bende geleceğim.","Kardeşimde geldi.","Annemde gelecek.","'Dahi' anlamındaki 'de' ayrı yazılır: Ben de, kardeşim de, annem de."],
+["Masallar genellikle nasıl başlar?","Bir varmış, bir yokmuş...","Sevgili günlük...","Sayın yetkili...","Sonuç olarak...","Masallar çoğunlukla 'Bir varmış, bir yokmuş' diye başlar."],
+["'Gözden düşmek' deyimi ne anlama gelir?","Değerini kaybetmek","Gözüne toz kaçmak","Uykuya dalmak","Ağlamak","Eskisi kadar sevilmemek, değer görmemek demektir."]
+],
+tur2:[
+["Bir hikâyede olayların geçtiği yere ne denir?","Mekân (yer)","Kahraman","Zaman","Başlık","Olayın nerede geçtiği hikâyenin mekânıdır."],
+["'Ağaç yaşken eğilir.' atasözü ne anlatır?","Eğitime küçük yaşta başlanmalı","Ağaçlar kolay kırılır","Ağaç dikmeliyiz","Yaşlı ağaçlar güçlüdür","İnsan küçükken daha kolay öğrenir ve eğitilir."],
+["Hangisi soru cümlesidir?","Yarın sinemaya gelecek misin?","Yarın sinemaya gideceğim.","Sinema çok güzeldi.","Haydi sinemaya gidelim!","Soru eki 'mi' ve soru işareti vardır."],
+["'Hızlı' kelimesinin zıt anlamlısı hangisidir?","yavaş","çabuk","güçlü","büyük","Hızlı ↔ yavaş."],
+["Hangisi doğru yazılmıştır?","Emre, İzmir'e gitti.","emre, izmir'e gitti.","Emre, izmir'e gitti.","emre, İzmir'e gitti.","Kişi ve şehir adları büyük harfle başlar."],
+["'Okul çantamı aldım.' cümlesinde kaç kelime vardır?","3","4","2","5","Okul / çantamı / aldım: 3 kelime."],
+["'Bu yaz denize gireceğiz.' cümlesinde 'yaz' ne anlamdadır?","Mevsim","Yazı yazmak","Kış","Ödev","Burada 'yaz' yılın sıcak mevsimidir."],
+["Hangisi şiirin bir özelliğidir?","Dizelerden oluşur","Yalnızca rakamlardan oluşur","Hiç kelime içermez","Sadece resimden oluşur","Şiirler dizelerden ve kıtalardan oluşur."],
+["Virgül nerede kullanılır?","Sıralanan kelimeleri ayırırken","Cümlenin sonunda","Soru sorarken","Kelimenin ortasında","Örnek: Elma, armut, muz aldım."],
+["'Neşeli' kelimesinin eş anlamlısı hangisidir?","şen","üzgün","kızgın","yorgun","Neşeli, şen ve mutlu benzer anlamdadır."],
+["Hangi kelime 'göz' kelimesinden türemiş bir eşya adıdır?","gözlük","gözler","gözü","gözde","Göz + lük = gözlük, yeni bir kelime."],
+["Bir metinde anlatılmak istenen en önemli düşünceye ne denir?","Ana fikir","Başlık","Kahraman","Mekân","Yazarın bize vermek istediği asıl mesaj ana fikirdir."]
+],
+ing1:[
+["'Nice to meet you.' ne zaman söylenir?","Biriyle ilk tanışınca","Vedalaşırken","Yemek yerken","Uyumadan önce","Tanıştığıma memnun oldum demektir."],
+["'How old are you?' sorusunun cevabı hangisi?","I'm nine.","I'm fine.","I'm Emre.","It's blue.","How old = kaç yaşında."],
+["'grandmother' ne demektir?","büyükanne","teyze","kız kardeş","anne","Grandmother = büyükanne, grandfather = büyükbaba."],
+["'My father is tall.' cümlesinde 'tall' ne demektir?","uzun boylu","kısa boylu","şişman","genç","Tall = uzun boylu, short = kısa boylu."],
+["'I am happy.' ne demektir?","Mutluyum.","Üzgünüm.","Yorgunum.","Açım.","Happy = mutlu."],
+["'angry' ne demektir?","kızgın","mutlu","uykulu","korkmuş","Angry = kızgın."],
+["'kite' ne demektir?","uçurtma","top","bebek","araba","Kite = uçurtma."],
+["Kedi kutunun İÇİNDE. 'The cat is ___ the box.'","in","on","under","next to","In = içinde, on = üstünde, under = altında."],
+["'kitchen' ne demektir?","mutfak","yatak odası","banyo","bahçe","Kitchen = mutfak."],
+["Yatak evin hangi odasında olur? 'The bed is in the ___.'","bedroom","kitchen","garden","bathroom","Bedroom = yatak odası."],
+["'seventeen' hangi sayıdır?","17","70","7","16","Seven = 7, seventeen = 17."],
+["'Can I have the ball, please?' ne demektir?","Topu alabilir miyim, lütfen?","Topu at!","Top nerede?","Topum yok.","Can I have...? = ...alabilir miyim?"]
+],
+ing2:[
+["'hospital' ne demektir?","hastane","okul","park","market","Hospital = hastane."],
+["'The park is next to the school.' Park okulun neresinde?","yanında","içinde","altında","üstünde","Next to = yanında."],
+["'bus' ne demektir?","otobüs","tren","uçak","bisiklet","Bus = otobüs."],
+["'I go to school by bike.' Okula neyle gidiyor?","Bisikletle","Otobüsle","Yürüyerek","Arabayla","By bike = bisikletle."],
+["'It's snowy.' ne demektir?","Hava karlı.","Hava yağmurlu.","Hava güneşli.","Hava rüzgârlı.","Snowy = karlı."],
+["'It's rainy. I need an ___.'","umbrella","ice cream","kite","sunglasses","Yağmurda şemsiye (umbrella) gerekir."],
+["'cold' ne demektir?","soğuk","sıcak","ılık","kuru","Cold = soğuk, hot = sıcak."],
+["'Which animal can fly?'","bird","fish","cow","horse","Kuş (bird) uçabilir."],
+["'elephant' ne demektir?","fil","zürafa","aslan","maymun","Elephant = fil."],
+["'A monkey likes ___.'","bananas","stones","shoes","cars","Maymunlar muzu (bananas) sever."],
+["'Turn left.' ne demektir?","Sola dön.","Sağa dön.","Düz git.","Dur.","Left = sol, right = sağ."],
+["'What's the weather like?' sorusunun cevabı hangisi?","It's sunny.","It's a cat.","I'm nine.","Yes, I can.","Hava durumu sorusu: It's sunny = Hava güneşli."]
+],
+alm1:[
+["'Guten Morgen!' ne demektir?","Günaydın!","İyi geceler!","Hoşça kal!","Teşekkürler!","Guten Morgen = Günaydın."],
+["'Wie heißt du?' ne demektir?","Adın ne?","Kaç yaşındasın?","Nasılsın?","Nerede oturuyorsun?","heißen = adı olmak. Cevap: Ich heiße Emre."],
+["'Ich bin acht Jahre alt.' ne demektir?","Sekiz yaşındayım.","Sekiz kardeşim var.","Saat sekiz.","Sekiz arkadaşım var.","acht = 8, Jahre alt = yaşında."],
+["'zwölf' hangi sayıdır?","12","20","2","11","elf = 11, zwölf = 12."],
+["'die Schwester' ne demektir?","kız kardeş","erkek kardeş","anne","teyze","Schwester = kız kardeş, Bruder = erkek kardeş."],
+["'der Bruder' ne demektir?","erkek kardeş","baba","dede","amca","Bruder = erkek kardeş."],
+["'Das ist mein Opa.' ne demektir?","Bu benim dedem.","Bu benim babam.","Bu benim ninem.","Bu benim amcam.","Opa = dede, Oma = nine."],
+["'der Bleistift' ne demektir?","kurşun kalem","silgi","cetvel","defter","Bleistift = kurşun kalem, Radiergummi = silgi."],
+["'das Heft' ne demektir?","defter","kitap","çanta","masa","Heft = defter, Buch = kitap."],
+["Muz hangi renktir? 'Die Banane ist ___.'","gelb","blau","rot","schwarz","gelb = sarı."],
+["'Montag' hangi gündür?","Pazartesi","Pazar","Cuma","Salı","Montag = Pazartesi, Sonntag = Pazar."],
+["'Ich spiele Fußball.' ne demektir?","Futbol oynuyorum.","Futbol izliyorum.","Topum var.","Futbolu sevmiyorum.","spielen = oynamak."]
+],
+alm2:[
+["'der Kopf' ne demektir?","baş","el","ayak","göz","Kopf = baş, Hand = el, Fuß = ayak."],
+["'die Hand' ne demektir?","el","kol","burun","kulak","Hand = el."],
+["'Buch' kelimesinin artikeli hangisidir?","das","der","die","den","das Buch = kitap."],
+["'der Hund' kelimesinin çoğulu nedir?","die Hunde","die Hunds","die Hunden","der Hunde","Ein Hund, zwei Hunde."],
+["'Es regnet.' ne demektir?","Yağmur yağıyor.","Kar yağıyor.","Hava güneşli.","Rüzgâr esiyor.","regnen = yağmur yağmak, schneien = kar yağmak."],
+["Kışın hava nasıldır? 'Im Winter ist es ___.'","kalt","heiß","warm","sonnig","kalt = soğuk."],
+["'die Erdbeere' ne demektir?","çilek","elma","muz","armut","Erdbeere = çilek, Apfel = elma."],
+["'Ich habe Hunger.' ne demektir?","Acıktım.","Susadım.","Yoruldum.","Üşüdüm.","Hunger = açlık, Durst = susuzluk."],
+["'der Januar' hangi aydır?","Ocak","Haziran","Şubat","Aralık","Januar = Ocak, Februar = Şubat."],
+["'zwanzig' hangi sayıdır?","20","12","2","200","zwei = 2, zwölf = 12, zwanzig = 20."],
+["'Was ist das? – Das ist eine Katze.' ne demektir?","Bu ne? – Bu bir kedi.","Kim o? – O bir kedi.","Kedi nerede? – Burada.","Kedin var mı? – Evet.","Was ist das? = Bu ne?"],
+["'Auf Wiedersehen!' ne demektir?","Hoşça kalın!","Günaydın!","Teşekkürler!","Afiyet olsun!","Vedalaşırken söylenir."]
+]};
+
 const ASTRO_SVG=`<svg viewBox="112 0 214 400" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="hc-tor"><path d="M146 140 Q190 128 234 140 L228 252 Q190 264 152 252 Z"/></clipPath></defs>
 <path d="M150 236 Q144 262 152 276 Q160 262 156 236 Z" fill="#ffbe0b"/><path d="M224 236 Q218 262 226 276 Q234 262 230 236 Z" fill="#ffbe0b"/>
 <path d="M151 236 Q148 254 152 262 Q157 254 155 236 Z" fill="#fb5607"/><path d="M225 236 Q222 254 226 262 Q231 254 229 236 Z" fill="#fb5607"/>
@@ -619,10 +795,9 @@ const HEROES={
  golge:{name:'Gölge Gamer',svg:GOLGE_SVG,flip:true,shot:PAD_SVG,shotName:'oyun kolu'}
 };
 
-let errShown=0;function showErr(err){console.error(err);if(errShown++)return;const d=document.createElement('div');d.style.cssText='position:fixed;left:10px;right:10px;bottom:10px;z-index:99;background:#7f1d1d;color:#fff;padding:12px;border-radius:12px;font:13px/1.4 monospace;white-space:pre-wrap';d.textContent='Hata: '+(err&&err.message||err)+'\n'+(err&&err.stack||'').split('\n').slice(0,3).join('\n')+'\n(Bu ekranın fotoğrafını Claude\'a gönder)';d.onclick=()=>d.remove();document.body.appendChild(d);}
-window.addEventListener('error',e=>showErr(e.error||e.message));window.addEventListener('unhandledrejection',e=>showErr(e.reason));
 // ===================== VERİ =====================
 for(const p of ['emir','emre'])for(const s of ['mat','fen','sos','tur','ing','alm']){BANK[p][s+'1']=BANK[p][s];BANK[p][s+'2']=BANK2[p][s];}
+Object.assign(BANK.emre,EMRE3);
 const svgSize=(s,w,h)=>s.replace('<svg ',`<svg width="${w}" height="${h}" `);
 const IMG={};
 function mkImg(key,svg){const im=new Image();im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);IMG[key]=im;}
@@ -632,7 +807,7 @@ HEROES.astro.img='astro';HEROES.astro.shotImg='choc';HEROES.astro.ar=214/400;
 HEROES.golge.img='golge';HEROES.golge.shotImg='pad';HEROES.golge.ar=266/400;
 
 const SUBJ={mat:'Matematik',fen:'Fen Bilimleri',sos:{emir:'Sosyal Bilgiler',emre:'Hayat Bilgisi'},tur:'Türkçe',ing:'İngilizce',alm:'Almanca',mix:'Karışık'};
-const PLAYERS={emir:{name:'Emir',lvl:'Ortaokul seviyesi',time:20},emre:{name:'Emre',lvl:'İlkokul seviyesi',time:30}};
+const PLAYERS={emir:{name:'Emir',lvl:'Ortaokul seviyesi',time:20},emre:{name:'Emre',lvl:'3. sınıf seviyesi',time:35}};
 const THEMES={
  grass:{sea:'#0b4a72',shal:'#1b8fb3',sand:'#e8d49c',g1:'#4a9a46',g2:'#3c853b',g3:'#5fb055',deco:['palm','tree','rock'],glow:'#a3e635'},
  sand:{sea:'#0c5578',shal:'#2aa3c2',sand:'#f0dfae',g1:'#d9c27d',g2:'#cdb36c',g3:'#e6d090',deco:['palm','rock','crate'],glow:'#f59e0b'},
@@ -833,7 +1008,7 @@ function islandSheet(id){
 // ===================== SORU TURU =====================
 const fmt=n=>String(n).replace('-','−');
 function mathQ(){
- const t=player==='emir'?rnd(0,4):rnd(0,3);let q,a,e;
+ const t=rnd(0,4);let q,a,e;
  if(player==='emir'){
   if(t===0){const x=rnd(12,25),y=rnd(3,9);a=x*y;q=`${x} × ${y} = ?`;e=`${x} × ${y} = ${a}.`;}
   if(t===1){const x=rnd(-20,20),y=rnd(-20,-1);a=x+y;q=`(${fmt(x)}) + (${fmt(y)}) = ?`;e=`Negatif sayı eklemek çıkarmak gibidir: ${fmt(x)} − ${-y} = ${fmt(a)}.`;}
@@ -841,12 +1016,14 @@ function mathQ(){
   if(t===3){const n=rnd(2,15);a=n*n;q=`${n}² = ?`;e=`${n}² = ${n} × ${n} = ${a}.`;}
   if(t===4){const d=rnd(2,6),m=rnd(1,d-1),k=rnd(2,12),N=d*k;a=m*k;q=`${m}/${d} × ${N} = ?`;e=`${N} ÷ ${d} = ${k}, ${k} × ${m} = ${a}.`;}
  }else{
-  if(t===0){const x=rnd(10,79),y=rnd(5,99-x);a=x+y;q=`${x} + ${y} = ?`;e=`${x} + ${y} = ${a}.`;}
-  if(t===1){const x=rnd(20,99),y=rnd(3,x-1);a=x-y;q=`${x} − ${y} = ?`;e=`${x} − ${y} = ${a}.`;}
-  if(t===2){const x=rnd(2,9),y=rnd(2,9);a=x*y;q=`${x} × ${y} = ?`;e=`${x} tane ${y}: ${a}.`;}
-  if(t===3){const b=rnd(2,9),k=rnd(2,9),x=b*k;a=k;q=`${x} ÷ ${b} = ?`;e=`${b} × ${k} = ${x} olduğu için ${x} ÷ ${b} = ${k}.`;}
+  if(t===0){const x=rnd(120,599),y=rnd(105,399);a=x+y;q=`${x} + ${y} = ?`;e=`${x} + ${y} = ${a}.`;}
+  if(t===1){const x=rnd(300,999),y=rnd(101,x-50);a=x-y;q=`${x} − ${y} = ?`;e=`${x} − ${y} = ${a}.`;}
+  if(t===2){const x=rnd(12,40),y=rnd(2,5);a=x*y;q=`${x} × ${y} = ?`;e=`${x} × ${y} = ${a}.`;}
+  if(t===3){const b=rnd(2,9),k=rnd(2,10),x=b*k;a=k;q=`${x} ÷ ${b} = ?`;e=`${b} × ${k} = ${x} olduğu için ${x} ÷ ${b} = ${k}.`;}
+  if(t===4){let n=rnd(11,989);if(n%10===0)n+=3;a=Math.round(n/10)*10;q=`${n} sayısını en yakın onluğa yuvarla.`;e=`Birler basamağı ${n%10}: ${n%10>=5?'5 veya daha büyük, yukarı':'5\'ten küçük, aşağı'} yuvarlanır → ${a}.`;
+   const ws=[a+10,a-10>0?a-10:a+20,n].filter(v=>v!==a);return {q,a:String(a),opts:shuffle([a,...ws].map(String)),exp:e,sub:'Matematik'};}
  }
- const w=new Set();for(const o of shuffle([1,-1,2,-2,10,-10,3,5])){const v=a+o;if(v!==a&&(player==='emir'||v>=0))w.add(v);if(w.size===3)break;}
+ const w=new Set();for(const o of shuffle(player==='emir'?[1,-1,2,-2,10,-10,3,5]:[1,-1,10,-10,100,-100,2])){const v=a+o;if(v!==a&&(player==='emir'||v>=0))w.add(v);if(w.size===3)break;}
  return {q,a:fmt(a),opts:shuffle([a,...w].map(fmt)),exp:e,sub:'Matematik'};
 }
 const toQ=(x,sub)=>({q:x[0],a:x[1],opts:shuffle([x[1],x[2],x[3],x[4]]),exp:x[5],sub});
