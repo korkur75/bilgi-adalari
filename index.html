@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bilgi Adaları</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e7fb8">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -966,6 +970,7 @@ let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&timer&&run&&!run.answered){stopTimer();modal(`<div style="font-size:50px">⏸️</div><h2>Oyun durdu</h2><button class="big" onclick="closeModal();resume()">Devam et</button>`);}});
 function resume(){if(!run||run.answered)return;run.tStart=Date.now();const left=run.tLeft;question();run.tLeft=left;}
 home();
+if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 </script>
 </body>
 </html>
