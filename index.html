@@ -619,6 +619,8 @@ const HEROES={
  golge:{name:'Gölge Gamer',svg:GOLGE_SVG,flip:true,shot:PAD_SVG,shotName:'oyun kolu'}
 };
 
+let errShown=0;function showErr(err){console.error(err);if(errShown++)return;const d=document.createElement('div');d.style.cssText='position:fixed;left:10px;right:10px;bottom:10px;z-index:99;background:#7f1d1d;color:#fff;padding:12px;border-radius:12px;font:13px/1.4 monospace;white-space:pre-wrap';d.textContent='Hata: '+(err&&err.message||err)+'\n'+(err&&err.stack||'').split('\n').slice(0,3).join('\n')+'\n(Bu ekranın fotoğrafını Claude\'a gönder)';d.onclick=()=>d.remove();document.body.appendChild(d);}
+window.addEventListener('error',e=>showErr(e.error||e.message));window.addEventListener('unhandledrejection',e=>showErr(e.reason));
 // ===================== VERİ =====================
 for(const p of ['emir','emre'])for(const s of ['mat','fen','sos','tur','ing','alm']){BANK[p][s+'1']=BANK[p][s];BANK[p][s+'2']=BANK2[p][s];}
 const svgSize=(s,w,h)=>s.replace('<svg ',`<svg width="${w}" height="${h}" `);
@@ -935,6 +937,7 @@ function endlessIntro(){modal(`<h2>Sonsuz Arena</h2><p style="color:var(--mut);m
  <div class="kv"><div><small>Rekorun</small><b>${S().ew?S().ew+'. dalga':'Yok'}</b></div><div><small>${PLAYERS[player==='emir'?'emre':'emir'].name}'in rekoru</small><b>${save[player==='emir'?'emre':'emir'].ew||0}. dalga</b></div></div>
  <button class="btn pri mt" onclick="startQuiz('arena')">Soru turunu başlat</button>`);}
 
+const imOk=im=>!!(im&&im.complete&&im.naturalWidth>0);
 // ===================== SAVAŞ MOTORU =====================
 let B=null;
 const WORLD=1800,CX=900,CY=900;
@@ -1126,8 +1129,8 @@ function hurt(amt){
 // ---------- Döngü ----------
 function loop(now){
  if(!B)return;const dt=Math.min(.05,(now-B.last)/1000);B.last=now;
- if(!B.paused)update(dt);if(!B)return;render();
- requestAnimationFrame(loop);
+ try{if(!B.paused)update(dt);if(!B)return;render();}catch(err){showErr(err);}
+ if(B)requestAnimationFrame(loop);
 }
 function nearest(x,y,max){let best=null,bd=max;B.enemies.forEach(e=>{if(e.spawn>0)return;const d=Math.hypot(e.x-x,e.y-y);if(d<bd){bd=d;best=e;}});return best;}
 function collideDecos(o,r){for(const d of B.decos){if(!d.r)continue;const rr=d.r*d.s+r,dx=o.x-d.x,dy=o.y-d.y,m=Math.hypot(dx,dy);if(m<rr&&m>0){o.x=d.x+dx/m*rr;o.y=d.y+dy/m*rr;}}}
@@ -1230,7 +1233,7 @@ function render(){
  // varlıklar (y sırasına göre)
  const ents=B.enemies.map(e=>({y:e.y,f:()=>drawEnemy(c,e)}));ents.push({y:p.y,f:()=>drawPlayer(c)});ents.sort((a,b)=>a.y-b.y).forEach(e=>e.f());
  // oyuncu mermileri
- const sim=IMG[hero().shotImg];B.pb.forEach(b=>{c.save();c.translate(b.x,b.y);c.globalAlpha=.35;c.fillStyle=B.T.glow;c.beginPath();c.arc(-b.vx*.02,-b.vy*.02,8,0,7);c.fill();c.globalAlpha=1;c.rotate(b.rot);if(sim.complete)c.drawImage(sim,-15,-8,30,16);c.restore();});
+ const sim=IMG[hero().shotImg];B.pb.forEach(b=>{c.save();c.translate(b.x,b.y);c.globalAlpha=.35;c.fillStyle=B.T.glow;c.beginPath();c.arc(-b.vx*.02,-b.vy*.02,8,0,7);c.fill();c.globalAlpha=1;c.rotate(b.rot);if(imOk(sim))c.drawImage(sim,-15,-8,30,16);c.restore();});
  // düşman mermileri
  c.globalCompositeOperation='lighter';
  B.eb.forEach(b=>{const g=c.createRadialGradient(b.x,b.y,1,b.x,b.y,b.r*1.9);g.addColorStop(0,'#fff');g.addColorStop(.35,b.col);g.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=g;c.beginPath();c.arc(b.x,b.y,b.r*1.9,0,7);c.fill();});
@@ -1254,11 +1257,11 @@ function shadow(c,x,y,rx,ry,a){c.fillStyle=`rgba(0,0,0,${a||.3})`;c.beginPath();
 function drawPlayer(c){
  const p=B.p,h=hero(),im=IMG[h.img],H=86,W=H*h.ar,bob=p.moving?Math.sin(B.t*12)*2.5:Math.sin(B.t*2)*1;
  const flip=h.flip?p.face>0:p.face<0;
- p.trail.forEach(t=>{c.globalAlpha=t.life*1.6;c.save();c.translate(t.x,t.y);if(flip)c.scale(-1,1);if(im.complete)c.drawImage(im,-W/2,-H+6,W,H);c.restore();});c.globalAlpha=1;
+ p.trail.forEach(t=>{c.globalAlpha=t.life*1.6;c.save();c.translate(t.x,t.y);if(flip)c.scale(-1,1);if(imOk(im))c.drawImage(im,-W/2,-H+6,W,H);c.restore();});c.globalAlpha=1;
  shadow(c,p.x,p.y+2,22,8,.35);
  if(p.inv>0&&Math.floor(B.t*16)%2&&p.dashT<=0)c.globalAlpha=.45;
- c.save();c.translate(p.x,p.y+bob);if(flip)c.scale(-1,1);if(im.complete)c.drawImage(im,-W/2,-H+6,W,H);c.restore();c.globalAlpha=1;
- if(player==='emir'){const ci=IMG.cat,px=p.x-p.face*42,py=p.y-6+Math.sin(B.t*4)*4;shadow(c,px,p.y+4,12,4,.25);if(ci.complete)c.drawImage(ci,px-15,py-28,30,29);}
+ c.save();c.translate(p.x,p.y+bob);if(flip)c.scale(-1,1);if(imOk(im))c.drawImage(im,-W/2,-H+6,W,H);c.restore();c.globalAlpha=1;
+ if(player==='emir'){const ci=IMG.cat,px=p.x-p.face*42,py=p.y-6+Math.sin(B.t*4)*4;shadow(c,px,p.y+4,12,4,.25);if(imOk(ci))c.drawImage(ci,px-15,py-28,30,29);}
  if(p.shieldT>0){const a=.35+.15*Math.sin(B.t*10);c.strokeStyle=`rgba(103,232,249,${a+.3})`;c.fillStyle=`rgba(34,211,238,${a*.35})`;c.lineWidth=3;c.beginPath();c.ellipse(p.x,p.y-38,44,54,0,0,7);c.fill();c.stroke();}
  // nişan
  const tg=nearest(p.x,p.y-30,560);if(tg&&B.state==='fight'){c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=2;c.setLineDash([6,6]);c.beginPath();c.ellipse(tg.x,tg.y+tg.r*.6,tg.r+10,(tg.r+10)*.45,0,0,7);c.stroke();c.setLineDash([]);}
@@ -1322,7 +1325,7 @@ function endBattle(won,quit){
  window.scrollTo({top:0});
 }
 
-home();
+try{home();}catch(err){showErr(err);}
 if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 </script>
 </body>
